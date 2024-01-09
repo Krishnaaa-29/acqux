@@ -1,26 +1,24 @@
 <script setup>
 import { Icon } from "@iconify/vue";
-import { reactive } from "vue";
 
-const sidebarState = reactive({
-  sidebarOpen: true,
+const props = defineProps({
+  sidebarOpen: {
+    type: Boolean,
+    required: true,
+  },
 });
-
-const toggleSidebar = () => {
-  sidebarState.sidebarOpen = !sidebarState.sidebarOpen;
-};
 
 defineEmits(["toggle-sidebar"]);
 </script>
 
 <template>
-  <nav :class="{ 'full-navbar': sidebarState.sidebarOpen }">
+  <nav :class="{ 'full-navbar': !sidebarOpen }">
     <div class="left-nav">
       <Icon
         icon="heroicons-solid:menu-alt-2"
         width="32"
         height="32"
-        @click="toggleSidebar"
+        @click="$emit('toggle-sidebar')"
         class="toggle-btn"
       />
       <div class="search-field">
@@ -138,6 +136,8 @@ nav {
   }
 }
 .full-navbar {
-  width: calc(100vw - 28px);
+  width: calc(100vw - 108px);
+  margin-left: 84px;
+  transition: all 0.5s ease-in;
 }
 </style>
