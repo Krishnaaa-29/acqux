@@ -28,7 +28,7 @@ const openSidebar = () => {
         :sidebarOpen="sidebarState.sidebarOpen"
         @toggle-sidebar="toggleSidebar"
       />
-      <RouterView />
+      <!-- <RouterView /> -->
     </div>
   </div>
 </template>

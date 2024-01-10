@@ -1,6 +1,23 @@
 <script setup>
 import { Icon } from "@iconify/vue";
 import { RouterLink } from "vue-router";
+import { reactive } from "vue";
+
+const logState = reactive({
+  isLogs: false,
+});
+
+const workflowState = reactive({
+  isWorkflow: false,
+});
+
+const toggleLogs = () => {
+  logState.isLogs = !logState.isLogs;
+};
+
+const toggleWorkflows = () => {
+  workflowState.isWorkflow = !workflowState.isWorkflow;
+};
 
 const props = defineProps({
   sidebarOpen: {
@@ -28,26 +45,49 @@ defineEmits(["open-sidebar"]);
       </div>
     </RouterLink>
 
-    <div class="lists" :class="{ 'close-lists': !sidebarOpen }">
+    <ul class="lists" :class="{ 'close-lists': !sidebarOpen }">
       <RouterLink to="/dashboard" class="list-container">
         <Icon icon="material-symbols:dashboard" width="24" height="24" />
-        <div class="link-title">Dashboard</div>
+        <p class="link-title">Dashboard</p>
       </RouterLink>
       <RouterLink to="/integrations" class="list-container">
         <Icon icon="mdi:puzzle" width="24" height="24" />
-        <div class="link-title">Integrations</div>
+        <p class="link-title">Integrations</p>
       </RouterLink>
       <RouterLink to="/templates" class="list-container">
         <Icon icon="ic:baseline-design-services" width="24" height="24" />
-        <div class="link-title">Templates</div>
+        <p class="link-title">Templates</p>
       </RouterLink>
-      <RouterLink to="/workflows" class="list-container">
+      <div class="list-container" @click="toggleWorkflows">
         <Icon icon="mdi:workflow" width="24" height="24" />
-        <div class="link-title">Workflows</div>
+        <p class="link-title">Workflows</p>
+        <Icon
+          v-if="workflowState.isWorkflow"
+          icon="carbon:chevron-up"
+          width="20"
+          height="20"
+        />
+        <Icon v-else icon="carbon:chevron-down" width="20" height="20" />
+      </div>
+      <RouterLink
+        to="/workflows/events"
+        v-if="workflowState.isWorkflow"
+        class="list-container"
+      >
+        <Icon icon="fluent-mdl2:radio-bullet" width="20" height="20" />
+        <p class="link-title">Events</p>
+      </RouterLink>
+      <RouterLink
+        to="/workflows/route"
+        v-if="workflowState.isWorkflow"
+        class="list-container"
+      >
+        <Icon icon="fluent-mdl2:radio-bullet" width="20" height="20" />
+        <p class="link-title">Route</p>
       </RouterLink>
       <RouterLink to="/users" class="list-container">
         <Icon icon="mdi:users" width="24" height="24" />
-        <div class="link-title">Users</div>
+        <p class="link-title">Users</p>
       </RouterLink>
       <RouterLink to="/automation" class="list-container">
         <Icon
@@ -55,13 +95,40 @@ defineEmits(["open-sidebar"]);
           width="24"
           height="24"
         />
-        <div class="link-title">Automation</div>
+        <p class="link-title">Automation</p>
       </RouterLink>
-      <RouterLink to="/logs" class="list-container">
+      <div class="list-container" @click="toggleLogs">
         <Icon icon="material-symbols-light:data-table" width="24" height="24" />
-        <div class="link-title">Logs</div>
+        <p class="link-title">Logs</p>
+        <Icon
+          v-if="logState.isLogs"
+          icon="carbon:chevron-up"
+          width="20"
+          height="20"
+        />
+        <Icon v-else icon="carbon:chevron-down" width="20" height="20" />
+      </div>
+      <RouterLink to="/logs/sent" v-if="logState.isLogs" class="list-container">
+        <Icon icon="fluent-mdl2:radio-bullet" width="20" height="20" />
+        <p class="link-title">Sent</p>
       </RouterLink>
-    </div>
+      <RouterLink
+        to="/logs/automation"
+        v-if="logState.isLogs"
+        class="list-container"
+      >
+        <Icon icon="fluent-mdl2:radio-bullet" width="20" height="20" />
+        <p class="link-title">Automation</p>
+      </RouterLink>
+      <RouterLink
+        to="/logs/recieved"
+        v-if="logState.isLogs"
+        class="list-container"
+      >
+        <Icon icon="fluent-mdl2:radio-bullet" width="20" height="20" />
+        <p class="link-title">Recieved</p>
+      </RouterLink>
+    </ul>
   </aside>
 </template>
 
@@ -73,6 +140,8 @@ defineEmits(["open-sidebar"]);
   width: 250px;
   background: #2b2a3d;
   color: white;
+  transition: 0.5s;
+  overflow: hidden;
 
   .logo {
     width: 190px;
@@ -112,10 +181,17 @@ defineEmits(["open-sidebar"]);
     margin-top: 48px;
 
     .list-container {
+      width: 100%;
       color: #b0afbb;
       display: flex;
       align-items: center;
-      gap: 12px;
+      justify-content: flex-start;
+      gap: 16px;
+      cursor: pointer;
+
+      .link-title {
+        width: 120px;
+      }
     }
 
     .list-container:focus {
@@ -128,10 +204,11 @@ defineEmits(["open-sidebar"]);
   width: 60px;
   margin: 0 auto;
   padding: 0;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
-  transition: all 0.5s ease-in;
+  overflow: hidden;
+  /* transition: margin-left 0.5s ease-in-out; */
 
   &:hover {
     width: 250px;
@@ -161,17 +238,10 @@ defineEmits(["open-sidebar"]);
     margin: 0 auto;
     padding: 0 20px;
     margin-top: 48px;
-
-    .link-title {
-      display: none;
-    }
   }
 }
 
 .close-container:hover .logo-title {
-  display: flex;
-}
-.close-container:hover .link-title {
   display: flex;
 }
 </style>

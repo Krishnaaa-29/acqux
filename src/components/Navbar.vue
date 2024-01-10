@@ -138,6 +138,6 @@ nav {
 .full-navbar {
   width: calc(100vw - 108px);
   margin-left: 84px;
-  transition: all 0.5s ease-in;
+  transition: margin-left 0.5s;
 }
 </style>
