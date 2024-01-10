@@ -186,7 +186,7 @@ defineEmits(["open-sidebar"]);
       display: flex;
       align-items: center;
       justify-content: flex-start;
-      gap: 16px;
+      gap: 20px;
       cursor: pointer;
 
       .link-title {
@@ -208,7 +208,6 @@ defineEmits(["open-sidebar"]);
   top: 0;
   left: 0;
   overflow: hidden;
-  /* transition: margin-left 0.5s ease-in-out; */
 
   &:hover {
     width: 250px;
@@ -238,6 +237,10 @@ defineEmits(["open-sidebar"]);
     margin: 0 auto;
     padding: 0 20px;
     margin-top: 48px;
+
+    .list-container {
+      width: auto;
+    }
   }
 }
 
